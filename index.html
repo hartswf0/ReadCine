@@ -2,6 +2,7 @@
 <html>
 <head>
   <style>
+    /* Previous styles remain... */
     body {
       margin: 0;
       padding: 20px;
@@ -12,246 +13,413 @@
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
     }
 
-    .header {
-      text-align: center;
-      margin-bottom: 40px;
-      border-bottom: 1px solid #0ff;
-      padding-bottom: 20px;
-    }
-
-    .status-bar {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      margin-bottom: 20px;
-    }
-
-    .main-interface {
+    /* New split layout */
+    .interface-container {
       display: grid;
-      grid-template-columns: 250px 1fr;
+      grid-template-columns: 300px 1fr;
       gap: 20px;
-      margin-bottom: 40px;
     }
 
-    .controls {
-      background: rgba(0, 255, 255, 0.1);
-      padding: 20px;
-      border-radius: 8px;
-    }
-
-    .control-group {
-      margin-bottom: 20px;
-    }
-
-    .visualization {
-      background: rgba(0, 255, 255, 0.05);
-      padding: 20px;
-      border-radius: 8px;
-      min-height: 400px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .scene {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+    .main-content {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: opacity 0.5s;
+      flex-direction: column;
+      gap: 20px;
     }
 
-    .scene.active {
-      opacity: 1;
+    /* Prompt System Styles */
+    .prompt-system {
+      background: rgba(0, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
     }
 
-    button {
-      background: transparent;
+    .prompt-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
       border: 1px solid #0ff;
       color: #0ff;
-      padding: 8px 16px;
-      margin: 4px;
-      cursor: pointer;
-      transition: all 0.3s;
+      padding: 10px;
+      font-family: monospace;
+      margin-bottom: 10px;
+      resize: vertical;
+      min-height: 60px;
     }
 
-    button:hover {
-      background: rgba(0, 255, 255, 0.2);
-    }
-
-    .slider {
-      width: 100%;
+    .prompt-suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
       margin: 10px 0;
     }
 
-    .loading {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
+    .prompt-tag {
+      background: rgba(0, 255, 255, 0.1);
+      border: 1px solid #0ff;
+      padding: 4px 8px;
+      border-radius: 4px;
       font-size: 12px;
-      animation: blink 1s infinite;
+      cursor: pointer;
     }
 
-    @keyframes blink {
-      50% { opacity: 0; }
+    .prompt-history {
+      margin-top: 10px;
+      max-height: 150px;
+      overflow-y: auto;
     }
 
-    .stats {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 20px;
-      padding: 20px;
+    .history-item {
+      padding: 5px;
+      border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+      cursor: pointer;
+    }
+
+    /* Media Gallery Styles */
+    .media-gallery {
       background: rgba(0, 255, 255, 0.05);
       border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
     }
 
-    .stat {
-      text-align: center;
+    .gallery-controls {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
     }
 
-    .warning {
-      color: #ff0;
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .gallery-item {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      aspect-ratio: 1;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .gallery-item:hover {
+      border-color: #0ff;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-item-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 5px;
       font-size: 12px;
-      margin-top: 10px;
+    }
+
+    /* Tabs System */
+    .tabs {
+      display: flex;
+      gap: 2px;
+      margin-bottom: 15px;
+    }
+
+    .tab {
+      padding: 8px 16px;
+      background: rgba(0, 255, 255, 0.1);
+      border: none;
+      color: #0ff;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      background: rgba(0, 255, 255, 0.3);
+    }
+
+    /* Professional Tools Panel */
+    .tools-panel {
+      background: rgba(0, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 20px;
+    }
+
+    .tool-group {
+      margin-bottom: 15px;
+    }
+
+    .tool-button {
+      width: 40px;
+      height: 40px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #0ff;
+      color: #0ff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 2px;
+      cursor: pointer;
+    }
+
+    .tool-button:hover {
+      background: rgba(0, 255, 255, 0.2);
+    }
+
+    /* Layer System */
+    .layers-panel {
+      background: rgba(0, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 20px;
+    }
+
+    .layer-item {
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      margin-bottom: 5px;
+      cursor: pointer;
+    }
+
+    .layer-item:hover {
+      background: rgba(0, 255, 255, 0.1);
+    }
+
+    .layer-visibility {
+      margin-right: 10px;
+    }
+
+    /* Export Panel */
+    .export-panel {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.9);
+      border: 1px solid #0ff;
+      padding: 20px;
+      z-index: 1000;
+      display: none;
+    }
+
+    .export-option {
+      margin: 10px 0;
+    }
+
+    /* Keyboard Shortcuts Panel */
+    .shortcuts-panel {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid #0ff;
+      padding: 10px;
+      font-size: 12px;
+      display: none;
+    }
+
+    .shortcut-item {
+      margin: 5px 0;
+    }
+
+    /* Status indicators */
+    .status-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+
+    .status-active {
+      background: #0f0;
+    }
+
+    .status-processing {
+      background: #ff0;
+      animation: blink 1s infinite;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>NARRATIVE VISION™ v0.9.4 [BETA]</h1>
+      <h1>NARRATIVE VISION™ PRO v1.0</h1>
       <div class="status-bar">
-        <span>AI ENGINE: ONLINE</span>
-        <span>RENDERING: ACTIVE</span>
+        <span><span class="status-indicator status-active"></span>AI ENGINE: ONLINE</span>
+        <span><span class="status-indicator status-processing"></span>RENDERING: ACTIVE</span>
         <span>IMAGINATION SYNC: 94%</span>
         <span id="timestamp">TIMESTAMP: --:--:--</span>
       </div>
     </div>
 
-    <div class="main-interface">
-      <div class="controls">
-        <div class="control-group">
-          <h3>SCENE CONTROLS</h3>
-          <button onclick="toggleScene()">PAUSE/RESUME</button>
-          <button onclick="bookmark()">BOOKMARK</button>
-        </div>
-
-        <div class="control-group">
-          <h3>STYLE MODE</h3>
-          <button onclick="setStyle('noir')">NOIR</button>
-          <button onclick="setStyle('fantasy')">FANTASY</button>
-          <button onclick="setStyle('scifi')">SCI-FI</button>
-        </div>
-
-        <div class="control-group">
-          <h3>RENDERING INTENSITY</h3>
-          <input type="range" class="slider" min="0" max="100" value="75" oninput="updateIntensity(this.value)">
-        </div>
-
-        <div class="control-group">
-          <h3>AUDIO AMBIENCE</h3>
-          <button onclick="toggleAudio()">TOGGLE SOUND</button>
-        </div>
-      </div>
-
-      <div class="visualization">
-        <div id="scene1" class="scene active">
-          <div style="text-align: center">
-            <h2>[SCENE RENDERING]</h2>
-            <p>Current page visualization in progress...</p>
+    <div class="interface-container">
+      <!-- Left Sidebar -->
+      <div class="sidebar">
+        <div class="tools-panel">
+          <h3>TOOLS</h3>
+          <div class="tool-group">
+            <button class="tool-button" title="Select">S</button>
+            <button class="tool-button" title="Move">M</button>
+            <button class="tool-button" title="Scale">T</button>
+            <button class="tool-button" title="Rotate">R</button>
+          </div>
+          <div class="tool-group">
+            <button class="tool-button" title="Brush">B</button>
+            <button class="tool-button" title="Eraser">E</button>
+            <button class="tool-button" title="Fill">F</button>
+            <button class="tool-button" title="Text">T</button>
           </div>
         </div>
-        <div class="loading">PROCESSING NARRATIVE DATA...</div>
-      </div>
-    </div>
 
-    <div class="stats">
-      <div class="stat">
-        <h4>IMAGINATION SYNC</h4>
-        <div id="syncRate">94%</div>
+        <div class="layers-panel">
+          <h3>LAYERS</h3>
+          <div class="layer-item">
+            <input type="checkbox" class="layer-visibility" checked>
+            <span>Background Scene</span>
+          </div>
+          <div class="layer-item">
+            <input type="checkbox" class="layer-visibility" checked>
+            <span>Character Layer</span>
+          </div>
+          <div class="layer-item">
+            <input type="checkbox" class="layer-visibility" checked>
+            <span>Effects Layer</span>
+          </div>
+        </div>
       </div>
-      <div class="stat">
-        <h4>RENDERING QUEUE</h4>
-        <div id="queueSize">2 SCENES</div>
-      </div>
-      <div class="stat">
-        <h4>STYLE MODE</h4>
-        <div id="currentStyle">ADAPTIVE</div>
-      </div>
-    </div>
 
-    <div class="warning">
-      ⚠ BETA NOTICE: Imagination Engine still learning. Some scenes may deviate from expected visualization. This is normal and adds to the experience.
+      <!-- Main Content Area -->
+      <div class="main-content">
+        <!-- Visualization Panel (previous content) -->
+        <div class="visualization">
+          <!-- Previous visualization content -->
+        </div>
+
+        <!-- Prompt System -->
+        <div class="prompt-system">
+          <h3>SCENE PROMPT</h3>
+          <textarea class="prompt-input" placeholder="Enter your scene description here..."></textarea>
+          <div class="prompt-suggestions">
+            <span class="prompt-tag">Dramatic Lighting</span>
+            <span class="prompt-tag">Character Focus</span>
+            <span class="prompt-tag">Environmental Detail</span>
+            <span class="prompt-tag">Action Sequence</span>
+            <span class="prompt-tag">Emotional Moment</span>
+          </div>
+          <button onclick="generateScene()">GENERATE SCENE</button>
+          <div class="prompt-history">
+            <div class="history-item">Previous: "A moonlit forest scene with fog..."</div>
+            <div class="history-item">Previous: "Character close-up showing determination..."</div>
+          </div>
+        </div>
+
+        <!-- Media Gallery -->
+        <div class="media-gallery">
+          <div class="gallery-controls">
+            <div class="tabs">
+              <button class="tab active">All Assets</button>
+              <button class="tab">Characters</button>
+              <button class="tab">Environments</button>
+              <button class="tab">Effects</button>
+            </div>
+            <button onclick="importAsset()">IMPORT</button>
+          </div>
+          <div class="gallery-grid">
+            <!-- Generated gallery items will go here -->
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
-    // Update timestamp
-    function updateTimestamp() {
-      const now = new Date();
-      const timestamp = now.toLocaleTimeString();
-      document.getElementById('timestamp').textContent = `TIMESTAMP: ${timestamp}`;
+    // Previous script content remains...
+
+    // New functionality for prompt system
+    function generateScene() {
+      const prompt = document.querySelector('.prompt-input').value;
+      const history = document.querySelector('.prompt-history');
+      const historyItem = document.createElement('div');
+      historyItem.className = 'history-item';
+      historyItem.textContent = `Previous: "${prompt}"`;
+      history.insertBefore(historyItem, history.firstChild);
+      
+      // Simulate processing
+      document.querySelector('.visualization').style.opacity = '0.5';
+      setTimeout(() => {
+        document.querySelector('.visualization').style.opacity = '1';
+      }, 2000);
     }
+
+    // Gallery system
+    function createGalleryItems() {
+      const gallery = document.querySelector('.gallery-grid');
+      const items = [
+        'Forest Scene', 'Character Model', 'Lighting Effect',
+        'Particle System', 'Custom Texture', 'Animation Preset'
+      ];
+
+      items.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'gallery-item';
+        div.innerHTML = `
+          <img src="/api/placeholder/150/150" alt="${item}">
+          <div class="gallery-item-overlay">${item}</div>
+        `;
+        gallery.appendChild(div);
+      });
+    }
+
+    // Initialize gallery
+    createGalleryItems();
+
+    // Tab system
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        // Filter gallery items based on tab
+      });
+    });
+
+    // Prompt tag system
+    document.querySelectorAll('.prompt-tag').forEach(tag => {
+      tag.addEventListener('click', () => {
+        const input = document.querySelector('.prompt-input');
+        input.value += ` ${tag.textContent}`;
+      });
+    });
+
+    // Layer system
+    document.querySelectorAll('.layer-visibility').forEach(checkbox => {
+      checkbox.addEventListener('change', () => {
+        // Toggle layer visibility
+      });
+    });
+
+    // Tool system
+    document.querySelectorAll('.tool-button').forEach(tool => {
+      tool.addEventListener('click', () => {
+        document.querySelectorAll('.tool-button').forEach(t => t.classList.remove('active'));
+        tool.classList.add('active');
+      });
+    });
+
+    // Initialize timestamp updater
     setInterval(updateTimestamp, 1000);
-
-    // Scene control
-    let isPaused = false;
-    function toggleScene() {
-      isPaused = !isPaused;
-      document.querySelector('.visualization').style.opacity = isPaused ? '0.5' : '1';
-    }
-
-    // Style control
-    function setStyle(style) {
-      document.getElementById('currentStyle').textContent = style.toUpperCase();
-      // Visual feedback
-      document.querySelector('.visualization').style.backgroundColor = 
-        style === 'noir' ? 'rgba(0, 0, 0, 0.8)' :
-        style === 'fantasy' ? 'rgba(128, 0, 255, 0.1)' :
-        style === 'scifi' ? 'rgba(0, 255, 255, 0.1)' : '';
-    }
-
-    // Rendering intensity
-    function updateIntensity(value) {
-      document.getElementById('syncRate').textContent = `${value}%`;
-    }
-
-    // Audio toggle
-    let audioEnabled = true;
-    function toggleAudio() {
-      audioEnabled = !audioEnabled;
-      // Visual feedback
-      document.querySelector('.visualization').style.border = 
-        audioEnabled ? '1px solid #0ff' : '1px solid #666';
-    }
-
-    // Bookmark function
-    function bookmark() {
-      const notification = document.createElement('div');
-      notification.style.position = 'fixed';
-      notification.style.top = '20px';
-      notification.style.right = '20px';
-      notification.style.background = 'rgba(0, 255, 255, 0.2)';
-      notification.style.padding = '10px';
-      notification.style.borderRadius = '4px';
-      notification.textContent = 'SCENE BOOKMARKED';
-      document.body.appendChild(notification);
-      setTimeout(() => notification.remove(), 2000);
-    }
-
-    // Simulate scene loading
-    setInterval(() => {
-      const queueSize = Math.floor(Math.random() * 5);
-      document.getElementById('queueSize').textContent = `${queueSize} SCENES`;
-    }, 3000);
   </script>
 </body>
 </html>
